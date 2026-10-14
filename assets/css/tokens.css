@@ -1,0 +1,126 @@
+/* =========================================================
+   SIE ENEM — Tokens de design (a "paleta oficial" do projeto)
+   Mude uma cor aqui e ela muda no sistema inteiro.
+
+   Cores das áreas: inspiradas nas cores dos cadernos de prova.
+   ========================================================= */
+
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("../fonts/atkinson-hyperlegible-latin-400-normal.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("../fonts/atkinson-hyperlegible-latin-700-normal.woff2") format("woff2");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("../fonts/bricolage-grotesque-latin-600-normal.woff2") format("woff2");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("../fonts/bricolage-grotesque-latin-700-normal.woff2") format("woff2");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
+:root {
+  /* Tipografia */
+  --fonte-titulo: "Bricolage Grotesque", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  --fonte-texto: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+
+  --tam-xs: 0.78rem;
+  --tam-s: 0.875rem;
+  --tam-m: 1rem;
+  --tam-l: 1.25rem;
+  --tam-xl: 1.6rem;
+  --tam-xxl: clamp(1.8rem, 1.2rem + 2.4vw, 2.75rem);
+
+  /* Espaçamentos (múltiplos de 4px) */
+  --esp-1: 4px;  --esp-2: 8px;  --esp-3: 12px; --esp-4: 16px;
+  --esp-5: 24px; --esp-6: 32px; --esp-7: 48px; --esp-8: 64px;
+
+  /* Cantos: pequenos em controles, maiores em painéis */
+  --raio-controle: 8px;
+  --raio-painel: 14px;
+
+  --largura-menu: 292px;
+  --largura-leitura: 68ch;
+
+  /* ---------- TEMA CLARO ---------- */
+  color-scheme: light;
+  --fundo: #F2F4F8;
+  --superficie: #FFFFFF;
+  --superficie-2: #E9EDF4;
+  --tinta: #152038;
+  --tinta-2: #44506A;
+  --apagado: #69738A;
+  --linha: #D6DCE6;
+  --acao: #1C3A8C;
+  --acao-texto: #FFFFFF;
+  --foco: #2F5BD3;
+  --sombra: 0 1px 2px rgba(21, 32, 56, 0.06), 0 8px 24px -12px rgba(21, 32, 56, 0.18);
+
+  --sucesso: #17784D;
+  --atencao: #9A5B00;
+  --erro: #B42318;
+
+  /* Áreas do ENEM */
+  --area-linguagens: #2F5BD3;
+  --area-humanas: #B07A00;
+  --area-natureza: #17845A;
+  --area-matematica: #C7366D;
+  --area-redacao: #56627A;
+}
+
+/* ---------- TEMA ESCURO (automático, se o computador estiver no modo escuro) ---------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --fundo: #0C1220;
+    --superficie: #141C2D;
+    --superficie-2: #1B2539;
+    --tinta: #E6EBF5;
+    --tinta-2: #B3BDD0;
+    --apagado: #8A95AA;
+    --linha: #27324A;
+    --acao: #9DB4FF;
+    --acao-texto: #0C1220;
+    --foco: #9DB4FF;
+    --sombra: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px -14px rgba(0, 0, 0, 0.6);
+    --sucesso: #4CC48D;
+    --atencao: #E7B24A;
+    --erro: #F38B80;
+    --area-linguagens: #7896F2;
+    --area-humanas: #E2B544;
+    --area-natureza: #4DBB8A;
+    --area-matematica: #EF75A2;
+    --area-redacao: #97A3B9;
+  }
+}
+
+/* ---------- TEMA ESCURO (escolhido no botão) ---------- */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --fundo: #0C1220;
+  --superficie: #141C2D;
+  --superficie-2: #1B2539;
+  --tinta: #E6EBF5;
+  --tinta-2: #B3BDD0;
+  --apagado: #8A95AA;
+  --linha: #27324A;
+  --acao: #9DB4FF;
+  --acao-texto: #0C1220;
+  --foco: #9DB4FF;
+  --sombra: 0 1px 2px rgba(0, 0, 0, 0.3), 0 10px 30px -14px rgba(0, 0, 0, 0.6);
+  --sucesso: #4CC48D;
+  --atencao: #E7B24A;
+  --erro: #F38B80;
+  --area-linguagens: #7896F2;
+  --area-humanas: #E2B544;
+  --area-natureza: #4DBB8A;
+  --area-matematica: #EF75A2;
+  --area-redacao: #97A3B9;
+}

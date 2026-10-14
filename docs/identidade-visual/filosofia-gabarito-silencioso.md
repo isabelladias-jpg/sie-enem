@@ -1,0 +1,13 @@
+# Gabarito Silencioso
+
+*Filosofia visual do SIE ENEM*
+
+O Gabarito Silencioso parte de uma convicção simples: uma grade vazia, desenhada com rigor, já é uma promessa. Antes de qualquer marca, existe o campo onde as marcas poderão acontecer, e esse campo merece ser construído com o mesmo cuidado que um arquiteto dedica a uma malha estrutural antes de erguer a primeira parede. O espaço não é um fundo neutro; é a própria matéria da composição. Cada intervalo entre formas é medido, repetido e respeitado, até que o vazio pareça intencional e não esquecido.
+
+A forma fundamental é o círculo aberto. Repetido dezenas, centenas de vezes, ele deixa de ser figura e vira textura, um campo de pequenas aberturas alinhadas que o olho percorre como se percorre uma fachada modulada. Nenhum círculo é maior que o outro sem motivo; nenhum alinhamento é aproximado. O resultado deve parecer fruto de horas de ajuste paciente, de alguém no topo do seu ofício que recusou cada desvio de meio pixel. Quando um único círculo é preenchido, ele pesa como um ponto final: a raridade do gesto cheio é o que lhe dá força.
+
+A cor é usada como código, nunca como enfeite. Poucos matizes, cada um com território próprio, convivem sobre um papel frio e uma tinta azul-profunda. As cores falam por zonas, não por manchas: um bloco inteiro respira no mesmo tom, delimitado com a precisão de quem prepara uma prancha técnica para ser aprovada em primeira revisão. Nada brilha sem necessidade; a saturação é contida para que a estrutura continue sendo a protagonista. Cada tom foi calibrado com atenção meticulosa, lado a lado, até que nenhum deles grite mais alto que o conjunto.
+
+A escala trabalha em dois registros que nunca se confundem: o campo amplo e repetitivo, que ocupa quase toda a superfície, e as pequenas marcas de referência nas bordas, discretas como cotas e marcas de registro em um desenho executivo. Entre esses dois registros há margem generosa. O ritmo vem da repetição exata; a tensão vem da única exceção. A composição deve sustentar um olhar demorado, recompensando quem se aproxima com alinhamentos cada vez mais precisos, a assinatura de uma execução de nível de mestre.
+
+O texto é quase ausente. Quando aparece, é rótulo, legenda técnica, um sussurro tipográfico que nomeia sem explicar. Uma família de desenho expressivo para os poucos títulos, outra de legibilidade extrema para as legendas, ambas em tamanhos pequenos e posições exatas. A informação vive na geometria. O conjunto final deve parecer um documento de uma disciplina inventada, produzido com cuidado artesanal obsessivo: um artefato que prova que algo ainda invisível pode ser medido, organizado e compreendido com atenção paciente.
