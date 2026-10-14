@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>SIE ENEM · Sistema Inteligente de Estudos</title>
+  <meta name="description" content="Plataforma pessoal para organizar os estudos para o ENEM, acompanhar o progresso e analisar temas com base em evidências.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+  <!-- Aplica o tema salvo ANTES de desenhar a página (evita "piscar" claro/escuro) -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('sie-tema');
+        if (t === 'claro') document.documentElement.setAttribute('data-theme', 'light');
+        if (t === 'escuro') document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (e) { /* armazenamento indisponível: segue o tema do sistema */ }
+    })();
+  </script>
+
+  <link rel="stylesheet" href="assets/css/tokens.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+</head>
+<body>
+  <a class="pular-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <div class="app" id="app">
+    <!-- MENU LATERAL: os itens são gerados a partir de assets/js/core/modulos.js -->
+    <aside class="sidebar" id="sidebar" aria-label="Navegação principal">
+      <div class="marca">
+        <img src="assets/img/logo.svg" alt="" width="36" height="36">
+        <div>
+          <strong>SIE ENEM</strong>
+          <span>Sistema Inteligente de Estudos</span>
+        </div>
+      </div>
+      <nav id="menu" class="menu"></nav>
+      <p class="sidebar-rodape" id="versao-app"></p>
+    </aside>
+    <div class="veu" id="veu" hidden></div>
+
+    <!-- ÁREA PRINCIPAL -->
+    <div class="principal">
+      <header class="topo">
+        <button class="botao-icone so-celular" id="abrir-menu" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="Abrir menu"></button>
+        <div class="topo-titulo">
+          <span class="topo-grupo" id="topo-grupo"></span>
+          <h1 id="titulo-pagina">Carregando…</h1>
+        </div>
+        <div class="topo-acoes">
+          <span class="selo-conexao" id="selo-conexao" data-estado="verificando">Verificando nuvem…</span>
+          <button class="botao-tema" id="botao-tema" type="button" aria-pressed="false"></button>
+        </div>
+      </header>
+
+      <main id="conteudo" class="conteudo" tabindex="-1" aria-live="polite"></main>
+    </div>
+  </div>
+
+  <noscript>
+    <p class="aviso-noscript">O SIE ENEM precisa do JavaScript ativado no navegador para funcionar.</p>
+  </noscript>
+
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

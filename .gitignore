@@ -1,0 +1,16 @@
+# Sistema operacional / editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Arquivos locais que NUNCA devem ir para o GitHub
+.env
+.env.*
+*.local.js
+segredos/
+backups/
+
+# Observação: config/supabase.config.js NÃO está aqui de propósito.
+# Ele contém apenas a URL e a chave PÚBLICA do Supabase, que precisam
+# ir para o GitHub Pages para o site funcionar. Veja o README.
