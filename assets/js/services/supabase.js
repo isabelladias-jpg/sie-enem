@@ -69,9 +69,14 @@ const pronto = (async () => {
   try {
     const { createClient } = await import(BIBLIOTECA);
     estado.cliente = createClient(url.replace(/\/$/, ''), chave, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+      auth: {
+        persistSession: true,      // continua logada ao fechar e abrir o navegador
+        autoRefreshToken: true,    // renova a sessão sozinho
+        detectSessionInUrl: true,  // entende os links de confirmação enviados por e-mail
+        flowType: 'pkce',          // método mais seguro para sites sem servidor próprio
+      },
     });
-    definir('configurado', 'Conexão preparada. O login será ativado na etapa 2.');
+    definir('configurado', 'Conectado ao Supabase. Seus dados ficam salvos na sua conta.');
   } catch (erro) {
     console.error('[SIE] Não foi possível carregar a biblioteca do Supabase', erro);
     definir('erro', 'Não foi possível carregar a biblioteca do Supabase. Verifique a conexão com a internet.');

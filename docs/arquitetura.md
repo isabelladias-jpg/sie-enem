@@ -44,9 +44,13 @@ sie-enem/
 │       │   ├── tema.js     Tema claro/escuro
 │       │   └── dom.js      Proteção contra textos maliciosos (escapar)
 │       ├── services/
-│       │   └── supabase.js Conexão com a nuvem + trava contra chave secreta
+│       │   ├── supabase.js Conexão com a nuvem + trava contra chave secreta
+│       │   ├── auth.js     Portaria: cadastro, entrar, sair, senha
+│       │   └── perfil.js   Ler e salvar o perfil (nome, tema, data da prova)
 │       ├── modules/
 │       │   ├── dashboard.js       Página inicial
+│       │   ├── entrar.js          Tela de login e cadastro
+│       │   ├── perfil.js          Perfil e configurações
 │       │   └── em-construcao.js   Página padrão das áreas futuras
 │       └── ui/
 │           └── icones.js   Ícones desenhados em SVG

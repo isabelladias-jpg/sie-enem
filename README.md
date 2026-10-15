@@ -2,7 +2,7 @@
 
 Plataforma pessoal para organizar os estudos para o ENEM, acompanhar o progresso e analisar, com base em evidências, os temas que podem aparecer na prova.
 
-**Versão atual:** 0.1.0 (etapa 1 de 8: base do projeto)
+**Versão atual:** 0.2.0 (etapa 2 de 8: login e perfil)
 
 ---
 
@@ -14,6 +14,9 @@ Plataforma pessoal para organizar os estudos para o ENEM, acompanhar o progresso
 - Layout para computador e celular (no celular, o menu vira uma gaveta).
 - Páginas "em construção" para cada área, explicando o que ela fará e em qual etapa.
 - Leitura da configuração do Supabase, com trava que recusa a chave secreta.
+- Cadastro, login, recuperação de senha e saída da conta.
+- Página de perfil: nome, tema (salvo na nuvem), data da prova e troca de senha.
+- Áreas com dados pessoais só abrem com login.
 
 Nenhum dado real ou estatística existe ainda. Onde não há dados, a tela mostra um traço.
 
@@ -47,7 +50,7 @@ O arquivo `.nojekyll` (vazio) já está incluído: ele avisa ao GitHub para publ
 
 ---
 
-## Como conectar o Supabase (pode ser feito agora ou na etapa 2)
+## Como conectar o Supabase
 
 ### 1. Criar o projeto
 1. Acesse [supabase.com](https://supabase.com) e crie uma conta.
@@ -63,13 +66,18 @@ No painel do projeto: **Project Settings > API** (ou **API Keys**). Copie:
 2. Renomeie a cópia para `supabase.config.js`.
 3. Cole a URL e a chave pública nos campos.
 
-### 4. Criar a tabela de perfis (na etapa 2)
+### 4. Criar a tabela de perfis
 No painel: **SQL Editor > New query**, cole o conteúdo de `supabase/migrations/001_perfis.sql` e clique em **Run**.
 
 ### 5. Liberar o endereço do site para o login
 Em **Authentication > URL Configuration**:
 - **Site URL**: `https://SEU-USUARIO.github.io/sie-enem/`
-- **Redirect URLs**: adicione também `http://localhost:8000` (para testes no computador).
+- **Redirect URLs**: adicione `https://SEU-USUARIO.github.io/sie-enem/` e, para testes no computador, `http://localhost:8000` e `http://127.0.0.1:5500`.
+
+### 6. Observações sobre os e-mails
+- Ao criar a conta, chega um e-mail de confirmação. Clique no link antes de entrar.
+- Links de **recuperação de senha** precisam ser abertos **no mesmo navegador** em que o pedido foi feito.
+- O envio de e-mails gratuito do Supabase tem limite de poucos e-mails por hora. Se não chegar, espere e veja o spam.
 
 ---
 

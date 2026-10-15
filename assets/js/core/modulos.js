@@ -8,9 +8,10 @@
  *   1. crie o arquivo em assets/js/modules/<id>.js (exportando render)
  *   2. troque `carregar` abaixo para apontar para ele
  *   3. mude a `etapa` / `pronto: true`
+ *   4. se a área mostrar dados pessoais, marque `exigeLogin: true`
  */
 
-export const VERSAO_APP = '0.1.0';
+export const VERSAO_APP = '0.2.0';
 
 export const ETAPAS = [
   { n: 1, nome: 'Base do projeto, navegação e identidade visual' },
@@ -23,7 +24,7 @@ export const ETAPAS = [
   { n: 8, nome: 'Relatórios, backup e restauração' },
 ];
 
-export const ETAPA_ATUAL = 1;
+export const ETAPA_ATUAL = 2;
 
 const emConstrucao = () => import('../modules/em-construcao.js');
 
@@ -121,17 +122,27 @@ export const MODULOS = [
     carregar: emConstrucao,
   },
   {
-    id: 'perfil', titulo: 'Perfil e configurações', grupo: 'sistema', icone: 'pessoa', etapa: 2,
+    id: 'perfil', titulo: 'Perfil e configurações', grupo: 'sistema', icone: 'pessoa', etapa: 2, pronto: true,
+    exigeLogin: true,
     resumo: 'Sua conta, preferências e data da prova.',
-    planejado: ['Cadastro e login', 'Preferência de tema salva na nuvem', 'Data-alvo da prova'],
-    carregar: emConstrucao,
+    carregar: () => import('../modules/perfil.js'),
+  },
+];
+
+/**
+ * Páginas que existem mas NÃO aparecem no menu (ex.: tela de entrar).
+ */
+export const PAGINAS_OCULTAS = [
+  {
+    id: 'entrar', titulo: 'Entrar', grupo: 'sistema', oculto: true,
+    carregar: () => import('../modules/entrar.js'),
   },
 ];
 
 export const ROTA_INICIAL = 'dashboard';
 
 export function buscarModulo(id) {
-  return MODULOS.find((m) => m.id === id) || null;
+  return MODULOS.find((m) => m.id === id) || PAGINAS_OCULTAS.find((m) => m.id === id) || null;
 }
 
 export function nomeDoGrupo(id) {

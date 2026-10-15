@@ -1,7 +1,6 @@
 -- =====================================================================
 -- SIE ENEM — Migração 001: tabela de perfis com segurança RLS
--- Status: PREPARADA, ainda NÃO executada no seu projeto Supabase.
--- Será usada na etapa 2 (login e perfil).
+-- Status: usada a partir da etapa 2 (login e perfil).
 --
 -- Como executar: painel do Supabase > SQL Editor > New query >
 -- cole este arquivo inteiro > Run.
@@ -67,7 +66,8 @@ security definer
 set search_path = ''
 as $$
 begin
-  insert into public.perfis (id) values (new.id)
+  insert into public.perfis (id, nome_exibicao)
+  values (new.id, left(nullif(trim(new.raw_user_meta_data ->> 'nome_exibicao'), ''), 80))
   on conflict (id) do nothing;
   return new;
 end;

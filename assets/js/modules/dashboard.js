@@ -12,6 +12,8 @@
 import { ETAPAS, ETAPA_ATUAL } from '../core/modulos.js';
 import { escapar } from '../core/dom.js';
 import { supabasePronto, estadoSupabase } from '../services/supabase.js';
+import { authPronto, usuarioAtual } from '../services/auth.js';
+import { carregarPerfil } from '../services/perfil.js';
 
 const AREAS = [
   { dia: 1, classe: 'area-linguagens', nome: 'Linguagens e Códigos', de: 1, ate: 45 },
@@ -60,10 +62,35 @@ function indicador(rotulo, ajuda) {
     </div>`;
 }
 
-function textoNuvem(estado) {
-  const tipo = { configurado: 'ok', erro: 'erro' }[estado.status] || '';
+function textoNuvem(estado, usuario) {
   if (estado.status === 'verificando') return '<p class="nota">Verificando a configuração…</p>';
+  if (estado.status === 'configurado' && usuario) {
+    return `<div class="aviso" data-tipo="ok">Conectada como <strong>${escapar(usuario.email)}</strong>. O que você salvar fica guardado na sua conta.</div>`;
+  }
+  if (estado.status === 'configurado') {
+    return `<div class="aviso">A nuvem está pronta, mas você ainda não entrou.</div>
+      <p><a class="botao botao-principal" href="#/entrar">Entrar ou criar conta</a></p>`;
+  }
+  const tipo = estado.status === 'erro' ? 'erro' : '';
   return `<div class="aviso" ${tipo ? `data-tipo="${tipo}"` : ''}>${escapar(estado.mensagem)}</div>`;
+}
+
+/** Dias inteiros entre hoje e a data escolhida pela pessoa (sem inventar datas oficiais). */
+function diasAte(dataTexto) {
+  const [a, m, d] = dataTexto.split('-').map(Number);
+  const alvo = new Date(a, m - 1, d);
+  const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+  return Math.round((alvo - hoje) / 86400000);
+}
+
+function textoContagem(perfil) {
+  if (!perfil?.data_prova) return '';
+  const dias = diasAte(perfil.data_prova);
+  const data = perfil.data_prova.split('-').reverse().join('/');
+  if (dias > 1) return `Faltam <strong>${dias} dias</strong> para a sua prova (${data}).`;
+  if (dias === 1) return `Sua prova é <strong>amanhã</strong> (${data}).`;
+  if (dias === 0) return `Sua prova é <strong>hoje</strong>. Boa prova!`;
+  return `A data da prova salva no perfil (${data}) já passou. Atualize em Perfil.`;
 }
 
 const graficoVazio = `
@@ -84,9 +111,11 @@ export async function render(alvo) {
   alvo.innerHTML = `
     <section class="abertura" aria-labelledby="titulo-abertura">
       <div class="abertura-texto">
+        <p class="saudacao" id="saudacao" hidden></p>
         <h2 id="titulo-abertura">Seu cartão-resposta ainda está em branco.</h2>
         <p>Cada bolinha representa uma das 180 questões objetivas do ENEM. Conforme você registrar estudos e simulados, elas serão preenchidas com o seu progresso real.</p>
         <p class="nota">Nenhum número desta tela é inventado: onde ainda não há dados, aparece um traço.</p>
+        <p class="contagem" id="contagem" hidden></p>
       </div>
       ${cartaoResposta()}
     </section>
@@ -111,7 +140,7 @@ export async function render(alvo) {
 
       <section class="painel" aria-labelledby="titulo-nuvem">
         <h3 id="titulo-nuvem">Sincronização na nuvem</h3>
-        <div id="estado-nuvem">${textoNuvem(estadoSupabase())}</div>
+        <div id="estado-nuvem">${textoNuvem(estadoSupabase(), usuarioAtual())}</div>
         <p class="nota">Com o Supabase configurado, seus dados ficam guardados na sua conta e aparecem iguais no computador e no celular.</p>
       </section>
     </div>
@@ -147,6 +176,23 @@ export async function render(alvo) {
     </section>`;
 
   const estado = await supabasePronto();
+  await authPronto;
+  const usuario = usuarioAtual();
   const caixa = alvo.querySelector('#estado-nuvem');
-  if (caixa) caixa.innerHTML = textoNuvem(estado);
+  if (caixa) caixa.innerHTML = textoNuvem(estado, usuario);
+  if (!usuario) return;
+
+  try {
+    const perfil = await carregarPerfil();
+    const saudacao = alvo.querySelector('#saudacao');
+    if (saudacao && perfil?.nome_exibicao) {
+      saudacao.textContent = `Olá, ${perfil.nome_exibicao}.`;
+      saudacao.hidden = false;
+    }
+    const contagem = alvo.querySelector('#contagem');
+    const texto = textoContagem(perfil);
+    if (contagem && texto) { contagem.innerHTML = texto; contagem.hidden = false; }
+  } catch (erro) {
+    console.warn('[SIE] Dashboard sem perfil:', erro);
+  }
 }

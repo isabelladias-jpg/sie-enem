@@ -4,15 +4,21 @@
  * Funciona como as "portas" entre os ambientes do sistema.
  * O endereço usa # (ex.: .../#/temas) porque o GitHub Pages não
  * tem servidor próprio: tudo acontece dentro de uma única página.
+ *
+ * Áreas marcadas com `exigeLogin` têm "porteiro": sem login, a
+ * pessoa é levada para a tela Entrar e depois volta para onde ia.
  */
 import { MODULOS, ROTA_INICIAL, buscarModulo, nomeDoGrupo } from './modulos.js';
 import { escapar, $, $$ } from './dom.js';
+import { authPronto, usuarioAtual } from '../services/auth.js';
+import { estadoSupabase } from '../services/supabase.js';
 
 const conteudo = () => $('#conteudo');
 
-function idDaRota() {
-  const bruto = location.hash.replace(/^#\/?/, '').split(/[/?]/)[0];
-  return bruto || ROTA_INICIAL;
+function lerRota() {
+  const bruto = location.hash.replace(/^#\/?/, '');
+  const [caminho, busca = ''] = bruto.split('?');
+  return { id: caminho.split('/')[0] || ROTA_INICIAL, params: new URLSearchParams(busca) };
 }
 
 function marcarMenu(id) {
@@ -24,14 +30,23 @@ function marcarMenu(id) {
 
 function definirTitulo(modulo) {
   $('#titulo-pagina').textContent = modulo ? modulo.titulo : 'Página não encontrada';
-  $('#topo-grupo').textContent = modulo ? nomeDoGrupo(modulo.grupo) : '';
+  $('#topo-grupo').textContent = modulo && !modulo.oculto ? nomeDoGrupo(modulo.grupo) : '';
   document.title = `${modulo ? modulo.titulo : 'Página não encontrada'} · SIE ENEM`;
+}
+
+function telaSemNuvem(modulo) {
+  conteudo().innerHTML = `
+    <section class="painel">
+      <h2>${escapar(modulo.titulo)}</h2>
+      <div class="aviso">Esta área precisa de login, e o login depende da conexão com o Supabase,
+        que ainda não foi configurada. Veja o passo a passo no README, seção "Como conectar o Supabase".</div>
+    </section>`;
 }
 
 let execucao = 0;
 
 async function navegar() {
-  const id = idDaRota();
+  const { id, params } = lerRota();
   const modulo = buscarModulo(id);
   const minhaExecucao = ++execucao;
 
@@ -49,10 +64,22 @@ async function navegar() {
     return;
   }
 
+  // Porteiro: áreas com dados pessoais exigem login
+  if (modulo.exigeLogin) {
+    conteudo().innerHTML = '<p class="nota">Verificando seu acesso…</p>';
+    await authPronto;
+    if (minhaExecucao !== execucao) return;
+    if (estadoSupabase().status !== 'configurado') { telaSemNuvem(modulo); return; }
+    if (!usuarioAtual()) {
+      location.replace(`#/entrar?volta=${encodeURIComponent(id)}`);
+      return;
+    }
+  }
+
   try {
     const arquivo = await modulo.carregar();
     if (minhaExecucao !== execucao) return; // a pessoa já mudou de página
-    await arquivo.render(conteudo(), modulo);
+    await arquivo.render(conteudo(), modulo, params);
   } catch (erro) {
     console.error('[SIE] Falha ao abrir o módulo', id, erro);
     conteudo().innerHTML = `
@@ -68,7 +95,21 @@ async function navegar() {
 export function iniciarRoteador() {
   if (!location.hash) history.replaceState(null, '', `#/${ROTA_INICIAL}`);
   window.addEventListener('hashchange', navegar);
+
+  // Quando alguém entra ou sai, reavalia a página atual se ela depende disso
+  let ultimoUsuario;
+  document.addEventListener('sie:sessao', (e) => {
+    const atual = e.detail.usuario?.id || null;
+    if (ultimoUsuario === undefined) { ultimoUsuario = atual; return; }
+    if (atual === ultimoUsuario) return;
+    ultimoUsuario = atual;
+    const modulo = buscarModulo(lerRota().id);
+    if (modulo?.exigeLogin || modulo?.id === 'entrar' || modulo?.id === ROTA_INICIAL) navegar();
+  });
+
   navegar();
 }
+
+export function irPara(id) { location.hash = `#/${id}`; }
 
 export { MODULOS };
